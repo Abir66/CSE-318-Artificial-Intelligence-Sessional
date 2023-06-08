@@ -16,7 +16,7 @@ struct Node{
     int blank_pos_x, blank_pos_y;
     vector<vector<int>> board;
     int distance_from_start_node, hamming_distance = -1, manhattan_distance = -1;
-    Node* parent_node = NULL;
+    Node* parent_node = nullptr;
     int last_move = -1;
 
     Node(){
@@ -44,6 +44,10 @@ struct Node{
 
     int get_distance_from_start_node(){
         return distance_from_start_node;
+    }
+
+    vector<vector<int>> get_board(){
+        return board;
     }
 
     int get_hamming_distance();
@@ -105,15 +109,15 @@ Node* move_blank(Node* node, int move){
     int x = node->blank_pos_x;
     int y = node->blank_pos_y;
 
-    if(x == 0 && move == UP) return NULL;
-    if(x == n-1 && move == DOWN) return NULL;
-    if(y == 0 && move == LEFT) return NULL;
-    if(y == n-1 && move == RIGHT) return NULL;
+    if(x == 0 && move == UP) return nullptr;
+    if(x == n-1 && move == DOWN) return nullptr;
+    if(y == 0 && move == LEFT) return nullptr;
+    if(y == n-1 && move == RIGHT) return nullptr;
 
-    if(node->last_move == UP && move == DOWN) return NULL;
-    if(node->last_move == DOWN && move == UP) return NULL;
-    if(node->last_move == LEFT && move == RIGHT) return NULL;
-    if(node->last_move == RIGHT && move == LEFT) return NULL;
+    if(node->last_move == UP && move == DOWN) return nullptr;
+    if(node->last_move == DOWN && move == UP) return nullptr;
+    if(node->last_move == LEFT && move == RIGHT) return nullptr;
+    if(node->last_move == RIGHT && move == LEFT) return nullptr;
 
     Node *new_node = new Node(*node);
     
@@ -208,7 +212,19 @@ bool compare_manhattan(Node* node1, Node* node2){
     return node1->get_distance_from_start_node() + node1->get_manhattan_distance() > node2->get_distance_from_start_node() + node2->get_manhattan_distance();
 }
 
-void solve(Node* start_node, int heuristic = MANHATTAN){
+void delete_nodes(Node* node, Node* start_node = nullptr){
+    if(node == nullptr || node == start_node) return;
+    auto parent_node = node->parent_node;
+    cout<<"trying to delete node: "<<endl;
+    node->print();
+    delete node;
+    cout<<"deleted node"<<endl;
+    node = nullptr;
+    if(parent_node == nullptr || parent_node == start_node) return;
+    delete_nodes(parent_node, start_node);
+}
+
+void solve(Node* start_node, stack<vector<vector<int>>> &solution,  int heuristic = MANHATTAN){
 
     auto cmp = compare_manhattan;
     if(heuristic == HAMMING) cmp = compare_hamming;
@@ -219,15 +235,15 @@ void solve(Node* start_node, int heuristic = MANHATTAN){
     Node* left = move_blank(start_node, LEFT);
     Node* right = move_blank(start_node, RIGHT);
 
-    if(up != NULL) pq.push(up);
-    if(down != NULL) pq.push(down);
-    if(left != NULL) pq.push(left);
-    if(right != NULL) pq.push(right);
+    if(up != nullptr) pq.push(up);
+    if(down != nullptr) pq.push(down);
+    if(left != nullptr) pq.push(left);
+    if(right != nullptr) pq.push(right);
 
-    int cnt = 0;
+   Node* node;
 
     while(!pq.empty()){
-        Node* node = pq.top();
+        node = pq.top();
         pq.pop();
         
         // if goal reached
@@ -241,11 +257,47 @@ void solve(Node* start_node, int heuristic = MANHATTAN){
         left = move_blank(node, LEFT);
         right = move_blank(node, RIGHT);
 
-        if(up != NULL) pq.push(up);
-        if(down != NULL) pq.push(down);
-        if(left != NULL) pq.push(left);
-        if(right != NULL) pq.push(right);
+        if(up != nullptr) pq.push(up);
+        if(down != nullptr) pq.push(down);
+        if(left != nullptr) pq.push(left);
+        if(right != nullptr) pq.push(right);
     }
+
+    auto temp = node;
+    while(node != nullptr){
+        solution.push(node->get_board());
+        node = node->parent_node;
+    }
+
+    delete_nodes(temp,start_node);
+    
+    // delete nodes
+    while (!pq.empty())
+    {
+        temp = pq.top();
+        pq.pop();
+        delete_nodes(temp,start_node);
+    }
+}
+
+void print_solution(stack<vector<vector<int>>> &solution){
+
+    cout<<"Minmum number of moves: "<<solution.size()-1<<endl;
+
+    while(!solution.empty()){
+        auto board = solution.top();
+        solution.pop();
+
+        for(int i = 0; i<n; i++){
+            for(int j = 0; j<n; j++){
+                cout<<board[i][j]<<" ";
+            }
+            cout<<endl;
+        }
+
+        cout<<endl;
+    }
+
 }
 
 int main(){
@@ -256,6 +308,7 @@ int main(){
     
     
     Node *start_node = new Node;
+    stack<vector<vector<int>>> solution;
    
     int value;
     for(int i = 0; i<n; i++){
@@ -267,7 +320,8 @@ int main(){
 
 
     if(is_solvable(start_node)){
-        solve(start_node, HAMMING);
+        solve(start_node, solution, HAMMING);
+        print_solution(solution);
     }
 
     else{
