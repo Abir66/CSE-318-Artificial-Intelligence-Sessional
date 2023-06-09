@@ -1,4 +1,5 @@
 #include<bits/stdc++.h>
+#include<memory>
 
 using namespace std;
 
@@ -9,6 +10,8 @@ using namespace std;
 #define RIGHT 3
 #define MANHATTAN 0
 #define HAMMING 1
+#define NodePtr shared_ptr<Node>
+#define SIZE_LIMIT 10000000
 
 int n;
 
@@ -16,7 +19,7 @@ struct Node{
     int blank_pos_x, blank_pos_y;
     vector<vector<int>> board;
     int distance_from_start_node, hamming_distance = -1, manhattan_distance = -1;
-    Node* parent_node = nullptr;
+    NodePtr parent_node = nullptr;
     int last_move = -1;
 
     Node(){
@@ -50,12 +53,39 @@ struct Node{
         return board;
     }
 
-    int get_hamming_distance();
-    int get_manhattan_distance();
+    int get_hamming_distance(){
+        if(hamming_distance != -1) return hamming_distance;
+
+        hamming_distance = 0;
+        for(int i=0; i<n; i++){
+            for(int j=0; j<n; j++){
+                if(board[i][j] != BLANK_VALUE && board[i][j] != i*n + j + 1) hamming_distance++;
+            }
+        }
+        return hamming_distance;
+    }
+    
+    int get_manhattan_distance(){
+        if(manhattan_distance != -1) return manhattan_distance;
+
+        manhattan_distance = 0;
+        int value, x, y;
+        for(int i=0; i<n; i++){
+            for(int j=0; j<n; j++){
+                value = board[i][j];
+                if(value != BLANK_VALUE){
+                    x = (value-1)/n;
+                    y = (value-1)%n;
+                    manhattan_distance += abs(x-i) + abs(y-j);
+                }
+            }
+        }
+        return manhattan_distance;
+    }
 
     
     // ---------------------------- print board ----------------------------
-    void print(){
+    void print_board(){
         for(int i=0; i<n; i++){
             for(int j=0; j<n; j++){
                 cout << board[i][j] << " ";
@@ -66,46 +96,39 @@ struct Node{
 };
 
 
-int calculate_hamming_distance(Node *node){
-    int distance = 0;
-    int value;
-    for(int i=0; i<n; i++){
-        for(int j=0; j<n; j++){
-            value = node->get_value(i, j);
-            if(value != BLANK_VALUE && value != i*n + j + 1) distance++;
+struct Solution{
+    int expanded_nodes = 0;
+    int explored_nodes = 0;
+    vector<NodePtr> path;
+
+    Solution(NodePtr node, int expanded_nodes = 0, int explored_nodes = 1){
+        save_path(node);
+        this->expanded_nodes = expanded_nodes;
+        this->explored_nodes = explored_nodes;
+    }
+
+    void save_path(NodePtr node){
+        if(node == nullptr) return;
+        save_path(node->parent_node);
+        path.push_back(node);
+    }
+
+    void print_path(){
+        for(auto node: path){
+            node->print_board();
+            cout<<endl;
         }
     }
-    return distance;
-}
 
-int calculate_manhattan_distance(Node *node){
-    int distance = 0;
-    int value, x, y;
-    for(int i=0; i<n; i++){
-        for(int j=0; j<n; j++){
-            value = node->get_value(i, j);
-            if(value != BLANK_VALUE){
-                x = (value-1)/n;
-                y = (value-1)%n;
-                distance += abs(x-i) + abs(y-j);
-            }
-        }
+    int get_minimum_moves(){
+        return path.size()-1;
     }
-    return distance;
-}
 
-int Node::get_hamming_distance(){
-    if(hamming_distance == -1) hamming_distance = calculate_hamming_distance(this);
-    return hamming_distance;
-}
-
-int Node::get_manhattan_distance(){
-    if(manhattan_distance == -1) manhattan_distance = calculate_manhattan_distance(this);
-    return manhattan_distance;
-}
+};
 
 
-Node* move_blank(Node* node, int move){
+// returns a new node after moving the blank. If not a valid move, returns nullptr
+NodePtr move_blank(NodePtr node, int move){
     int x = node->blank_pos_x;
     int y = node->blank_pos_y;
 
@@ -119,7 +142,8 @@ Node* move_blank(Node* node, int move){
     if(node->last_move == LEFT && move == RIGHT) return nullptr;
     if(node->last_move == RIGHT && move == LEFT) return nullptr;
 
-    Node *new_node = new Node(*node);
+    NodePtr new_node = make_shared<Node>(*node);
+
     
     if(move == LEFT) swap(new_node->board[x][y], new_node->board[x][y-1]);
     else if(move == RIGHT) swap(new_node->board[x][y], new_node->board[x][y+1]);
@@ -130,10 +154,13 @@ Node* move_blank(Node* node, int move){
     new_node->blank_pos_y = y + (move == RIGHT) - (move == LEFT);
 
     new_node->distance_from_start_node = node->distance_from_start_node + 1;
-    new_node->hamming_distance = calculate_hamming_distance(new_node);
-    new_node->manhattan_distance = calculate_manhattan_distance(new_node);
+    new_node->hamming_distance = -1;
+    new_node->manhattan_distance = -1;
     new_node->parent_node = node;
     new_node->last_move = move;
+
+    new_node->get_manhattan_distance();
+    new_node->get_hamming_distance();
 
     return new_node;
 }
@@ -161,7 +188,7 @@ int merge(vector<int> &vec, int start, int mid, int end){
         else if(left[i]<=right[j]) vec[k] = left[i++];
         else{
             vec[k] = right[j++];
-            inversions++;
+            inversions += n1 - i;
         }
     }
 
@@ -181,7 +208,7 @@ int mergeSort(vector<int> &vec, int start, int end){
 }
 
 
-bool is_solvable(Node *node){
+bool is_solvable(NodePtr node){
     vector<int> vec;
     int value;
     for(int i = 0; i<n; i++){
@@ -191,7 +218,8 @@ bool is_solvable(Node *node){
         }
     }
 
-    int inversions = mergeSort(vec, 0, n*n-2);
+   
+    int inversions = mergeSort(vec, 0, vec.size()-1);
 
     if(n%2 == 1 && inversions%2==0) return true;
 
@@ -204,111 +232,94 @@ bool is_solvable(Node *node){
 }
 
 
-bool compare_hamming(Node* node1, Node* node2){
-    return node1->get_distance_from_start_node() + node1->get_hamming_distance() > node2->get_distance_from_start_node() + node2->get_hamming_distance();
+bool compare_hamming(NodePtr node1, NodePtr node2){
+    int dist1 = node1->get_distance_from_start_node() + node1->get_hamming_distance();
+    int dist2 = node2->get_distance_from_start_node() + node2->get_hamming_distance();
+    if(dist1 == dist2) return node1->distance_from_start_node > node2->distance_from_start_node;
+    return dist1 > dist2;
 }
 
-bool compare_manhattan(Node* node1, Node* node2){
-    return node1->get_distance_from_start_node() + node1->get_manhattan_distance() > node2->get_distance_from_start_node() + node2->get_manhattan_distance();
+bool compare_manhattan(NodePtr node1, NodePtr node2){
+    int dist1 = node1->get_distance_from_start_node() + node1->get_manhattan_distance();
+    int dist2 = node2->get_distance_from_start_node() + node2->get_manhattan_distance();
+    if(dist1 == dist2) return node1->distance_from_start_node > node2->distance_from_start_node;
+    return dist1 > dist2;
 }
 
-void delete_nodes(Node* node, Node* start_node = nullptr){
-    if(node == nullptr || node == start_node) return;
-    auto parent_node = node->parent_node;
-    cout<<"trying to delete node: "<<endl;
-    node->print();
-    delete node;
-    cout<<"deleted node"<<endl;
-    node = nullptr;
-    if(parent_node == nullptr || parent_node == start_node) return;
-    delete_nodes(parent_node, start_node);
-}
 
-void solve(Node* start_node, stack<vector<vector<int>>> &solution,  int heuristic = MANHATTAN){
-
+Solution solve(NodePtr &start_node, int heuristic = MANHATTAN){
+    
     auto cmp = compare_manhattan;
     if(heuristic == HAMMING) cmp = compare_hamming;
-    priority_queue<Node*, vector<Node*>, function<bool(Node*, Node*)>> pq(cmp);
-
-    Node* up = move_blank(start_node, UP);
-    Node* down = move_blank(start_node, DOWN);
-    Node* left = move_blank(start_node, LEFT);
-    Node* right = move_blank(start_node, RIGHT);
-
-    if(up != nullptr) pq.push(up);
-    if(down != nullptr) pq.push(down);
-    if(left != nullptr) pq.push(left);
-    if(right != nullptr) pq.push(right);
-
-   Node* node;
+    int expanded_nodes = 0;
+    int explored_nodes = 1;
+    NodePtr node;
+    
+    if(start_node->get_hamming_distance() == 0)
+        return Solution(start_node, expanded_nodes, explored_nodes);
+    
+    priority_queue<NodePtr, vector<NodePtr>, function<bool(NodePtr, NodePtr)>> pq(cmp);
+    map<vector<vector<int>>, bool> visited;
+    
+    visited[start_node->get_board()] = true;
+    pq.push(start_node);
 
     while(!pq.empty()){
         node = pq.top();
         pq.pop();
+       
+        auto up = move_blank(node, UP);
+        auto down = move_blank(node, DOWN);
+        auto left = move_blank(node, LEFT);
+        auto right = move_blank(node, RIGHT);
+
+        expanded_nodes++;
         
-        // if goal reached
-        if(node->get_hamming_distance() == 0){
-            cout<<"Solved"<<endl;
-            break;
+        // check if valid move, check if visited, check if goal reached
+        // push to pq if valid
+        // update visited
+        if(up && visited.find(up->get_board()) == visited.end()) {
+            pq.push(up);
+            explored_nodes++;
+            if(visited.size() < SIZE_LIMIT) visited[up->get_board()] = true;
+            if(up->get_hamming_distance() == 0) {node = up; break;}
         }
 
-        up = move_blank(node, UP);
-        down = move_blank(node, DOWN);
-        left = move_blank(node, LEFT);
-        right = move_blank(node, RIGHT);
-
-        if(up != nullptr) pq.push(up);
-        if(down != nullptr) pq.push(down);
-        if(left != nullptr) pq.push(left);
-        if(right != nullptr) pq.push(right);
-    }
-
-    auto temp = node;
-    while(node != nullptr){
-        solution.push(node->get_board());
-        node = node->parent_node;
-    }
-
-    delete_nodes(temp,start_node);
-    
-    // delete nodes
-    while (!pq.empty())
-    {
-        temp = pq.top();
-        pq.pop();
-        delete_nodes(temp,start_node);
-    }
-}
-
-void print_solution(stack<vector<vector<int>>> &solution){
-
-    cout<<"Minmum number of moves: "<<solution.size()-1<<endl;
-
-    while(!solution.empty()){
-        auto board = solution.top();
-        solution.pop();
-
-        for(int i = 0; i<n; i++){
-            for(int j = 0; j<n; j++){
-                cout<<board[i][j]<<" ";
-            }
-            cout<<endl;
+        if(down && visited.find(down->get_board()) == visited.end()) {
+            pq.push(down);
+            explored_nodes++;
+            if(visited.size() < SIZE_LIMIT) visited[down->get_board()] = true;
+            if(down->get_hamming_distance() == 0) {node = down; break;}
         }
 
-        cout<<endl;
+        if(left && visited.find(left->get_board()) == visited.end()) {
+            pq.push(left);
+            explored_nodes++;
+            if(visited.size() < SIZE_LIMIT) visited[left->get_board()] = true;
+            if(left->get_hamming_distance() == 0) {node = left; break;}
+        }
+
+        if(right && visited.find(right->get_board()) == visited.end()) {
+            pq.push(right);
+            explored_nodes++;
+            if(visited.size() < SIZE_LIMIT) visited[right->get_board()] = true;
+            if(right->get_hamming_distance() == 0) {node = right; break;}
+        } 
     }
 
+    return Solution(node, expanded_nodes, explored_nodes);
 }
+
 
 int main(){
 
-    freopen("input.txt", "r", stdin);
+    freopen("318_offline_1/in09.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
     
     cin >> n;
     
     
-    Node *start_node = new Node;
-    stack<vector<vector<int>>> solution;
+    NodePtr start_node = make_shared<Node>();
    
     int value;
     for(int i = 0; i<n; i++){
@@ -320,8 +331,22 @@ int main(){
 
 
     if(is_solvable(start_node)){
-        solve(start_node, solution, HAMMING);
-        print_solution(solution);
+        //Solution solution = solve(start_node, HAMMING);
+        Solution solution2 = solve(start_node, MANHATTAN);
+
+        // cout<<"For Hamming Distance"<<endl;
+        // cout<<"Number of expanded nodes: "<<solution.expanded_nodes<<endl;
+        // cout<<"Number of explored nodes: "<<solution.explored_nodes<<endl;
+        // cout<<"---------------------------------"<<endl;
+       
+        cout<<"For Manhattan Distance:"<<endl;
+        cout<<"Number of expanded nodes: "<<solution2.expanded_nodes<<endl;
+        cout<<"Number of explored nodes: "<<solution2.explored_nodes<<endl;
+        cout<<"---------------------------------"<<endl;
+
+
+        cout<<"Minimum number of moves: "<<solution2.get_minimum_moves()<<endl;
+        solution2.print_path();
     }
 
     else{
