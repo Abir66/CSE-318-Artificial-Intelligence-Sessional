@@ -313,7 +313,7 @@ Solution solve(NodePtr &start_node, int heuristic = MANHATTAN){
 
 int main(){
 
-    freopen("318_offline_1/in09.txt", "r", stdin);
+    //freopen("input.txt", "r", stdin);
     freopen("output.txt", "w", stdout);
     
     cin >> n;
