@@ -10,6 +10,7 @@ struct Node{
 
     vector<int> board = vector<int>(14);
     int next_player;
+    int prev_player;
     int p1_extra_move = 0;
     int p2_extra_move = 0;
     int p1_captured = 0;
@@ -39,6 +40,7 @@ struct Node{
 
     NodePtr move(int player, int pos){
         NodePtr next = make_shared<Node>(*this);
+        next->prev_player = player;
         // next->board = board;
         // next->p1_extra_move = p1_extra_move;
         // next->p2_extra_move = p2_extra_move;
@@ -73,10 +75,10 @@ struct Node{
                 }
             }
 
-            // else{
-            //     p1_captured = 0;
-            //     p2_captured = 0;
-            // }
+            else{
+                p1_captured = 0;
+                p2_captured = 0;
+            }
         }
 
         if(player == PLAYER1 && pos == 7) {
@@ -95,6 +97,18 @@ struct Node{
             next->p2_extra_move = 0;
         }
 
+        // check gamevoer
+
+        if(next->gameOver()){
+            // move all stones to mancala
+            for(int i = 1; i <= 6; i++){
+                next->board[0] += next->board[i];
+                next->board[i] = 0;
+                next->board[7] += next->board[i + 7];
+                next->board[i + 7] = 0;
+            }
+        }
+
         return next;
     }
 
@@ -110,7 +124,7 @@ struct Node{
         cout<< "|         |          |         |         |         |         |         |         |"<<endl;
         cout<< "|         --------------------------------------------------------------         |"<<endl;
         cout<< "|         |                                                            |         |"<<endl;
-        cout <<"|"<< setw(5) << board[0]<< setw(0)<<"    |<- Player 2              MANCALA               Player 1  ->|"<< setw(5) << board[7]<< setw(0) << "     |"<<endl;;
+        cout <<"|"<< setw(5) << board[0]<< setw(0)<<"    |<- Player 2               MANCALA               Player 1  ->|"<< setw(5) << board[7]<< setw(0) << "    |"<<endl;;
         cout<< "|         |                                                            |         |"<<endl;
         cout<< "|         --------------------------------------------------------------         |"<<endl;
         cout<< "|         |          |         |         |         |         |         |         |"<<endl;

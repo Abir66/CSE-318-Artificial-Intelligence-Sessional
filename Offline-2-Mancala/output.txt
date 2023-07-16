@@ -1,1 +1,0 @@
-Enter heuristic for player 1 : 
