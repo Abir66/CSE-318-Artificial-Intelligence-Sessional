@@ -313,7 +313,7 @@ Solution solve(NodePtr &start_node, int heuristic = MANHATTAN){
 
 int main(){
 
-    //freopen("input.txt", "r", stdin);
+    freopen("input.txt", "r", stdin);
     freopen("output.txt", "w", stdout);
     
     cin >> n;
@@ -331,13 +331,13 @@ int main(){
 
 
     if(is_solvable(start_node)){
-        //Solution solution = solve(start_node, HAMMING);
+        Solution solution = solve(start_node, HAMMING);
         Solution solution2 = solve(start_node, MANHATTAN);
 
-        // cout<<"For Hamming Distance"<<endl;
-        // cout<<"Number of expanded nodes: "<<solution.expanded_nodes<<endl;
-        // cout<<"Number of explored nodes: "<<solution.explored_nodes<<endl;
-        // cout<<"---------------------------------"<<endl;
+        cout<<"For Hamming Distance"<<endl;
+        cout<<"Number of expanded nodes: "<<solution.expanded_nodes<<endl;
+        cout<<"Number of explored nodes: "<<solution.explored_nodes<<endl;
+        cout<<"---------------------------------"<<endl;
        
         cout<<"For Manhattan Distance:"<<endl;
         cout<<"Number of expanded nodes: "<<solution2.expanded_nodes<<endl;

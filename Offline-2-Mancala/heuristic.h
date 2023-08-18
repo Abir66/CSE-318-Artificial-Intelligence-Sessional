@@ -11,7 +11,7 @@ using namespace std;
 double heuristic1(NodePtr node, int player, double w[]){
     // need to normalize
     if(player == PLAYER1) return (node->board[7] - node->board[0]) / 72.0;
-    else return (node->board[0] - node->board[7]) / 24.0;
+    else return (node->board[0] - node->board[7]) / 72.0;
 }
 
 // heuristic-2: 
