@@ -10,12 +10,40 @@
 #include <memory>
 #include <algorithm>
 #include <random>
-#include <chrono> 
+#include <chrono>
 
 using namespace std;
 
-
 #define DataFramePtr shared_ptr<DataFrame>
+
+
+const string WHITESPACE = " \n\r\t\f\v";
+
+string trim(const string &s) {
+    string str;
+    size_t start = s.find_first_not_of(WHITESPACE);
+    str =  (start == string::npos) ? "" : s.substr(start);
+
+    size_t end = str.find_last_not_of(WHITESPACE);
+    return (end == string::npos) ? "" : str.substr(0, end + 1);
+}
+
+void split(const string &line, vector<string>&vec, string delimiters = ","){
+    string cell;
+    for (int i = 0; i < line.size(); i++)
+    {
+        if (delimiters.find(line[i]) != std::string::npos){
+            if(!cell.empty()) vec.push_back(cell);
+            cell = "";
+        }
+        else
+        {
+            cell += line[i];
+        }
+    }
+    vec.push_back(cell);
+}
+ 
 
 struct DataFrame
 {
@@ -34,7 +62,8 @@ struct DataFrame
         }
     }
 
-    void clear_all(){
+    void clear_all()
+    {
         data.clear();
         unique_values.clear();
         label_map.clear();
@@ -45,14 +74,16 @@ struct DataFrame
         vector<vector<string>> temp_data = data;
         test.clear_all();
         train.clear_all();
-        unsigned seed = std::chrono::system_clock::now()
-                        .time_since_epoch()
-                        .count();
-        shuffle (data.begin(), data.end(), std::default_random_engine(seed));
+        unsigned seed = chrono::system_clock::now()
+                            .time_since_epoch()
+                            .count();
+        shuffle(data.begin(), data.end(), default_random_engine(seed));
 
         int train_rows = train_size * nRows();
-        for (int i = 0; i < train_rows; i++) train.add_row(data[i]);
-        for (int i = train_rows; i < nRows(); i++) test.add_row(data[i]);
+        for (int i = 0; i < train_rows; i++)
+            train.add_row(data[i]);
+        for (int i = train_rows; i < nRows(); i++)
+            test.add_row(data[i]);
     }
 
     void read_from_file(string filename, string delimiter = ",")
@@ -66,25 +97,13 @@ struct DataFrame
         string line;
         while (getline(file, line))
         {
-            if (line.size() == 0)
-                continue;
+            if (line.size() == 0) continue;
             vector<string> row;
-            string cell;
-            for (int i = 0; i < line.size(); i++)
-            {
-                if (line[i] == delimiter[0])
-                {
-                    row.push_back(cell);
-                    cell = "";
-                }
-                else
-                {
-                    cell += line[i];
-                }
-            }
-            row.push_back(cell);
+            split(line, row, delimiter);
             add_row(row);
         }
+
+        file.close();
     }
 
     void add_row(vector<string> row)
@@ -162,7 +181,7 @@ struct DataFrame
             remainder += (double)it->second / nRows() * entropy(label_map[index][it->first]);
         }
 
-        //cout<<total_entropy<<" "<<remainder<<endl;
+        // cout<<total_entropy<<" "<<remainder<<endl;
 
         return total_entropy - remainder;
     }
@@ -177,5 +196,6 @@ struct DataFrame
         return label_map[index];
     }
 };
+
 
 #endif

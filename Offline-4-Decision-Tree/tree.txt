@@ -1,0 +1,380 @@
+root,1382,unacc,962,5
+	high,465,unacc,220,3
+		2  ---->  unacc
+		4,157,acc,85,0
+			high,37,acc,27,1
+				high  ---->  acc
+				low  ---->  acc
+				med  ---->  acc
+				vhigh  ---->  unacc
+			low,42,vgood,16,1
+				high,10,vgood,6,4
+					big  ---->  vgood
+					med,4,acc,2,2
+						2  ---->  acc
+						3  ---->  acc
+						4  ---->  vgood
+						5more  ---->  vgood
+					small  ---->  acc
+				low,11,good,6,4
+					big  ---->  vgood
+					med,4,good,2,2
+						2  ---->  good
+						3  ---->  good
+						4  ---->  vgood
+						5more  ---->  vgood
+					small  ---->  good
+				med,11,good,6,4
+					big  ---->  vgood
+					med,4,good,2,2
+						2  ---->  good
+						3  ---->  good
+						4  ---->  vgood
+						5more  ---->  vgood
+					small  ---->  good
+				vhigh  ---->  acc
+			med,43,acc,27,1
+				high  ---->  acc
+				low,12,good,6,4
+					big  ---->  vgood
+					med,4,good,2,2
+						2  ---->  good
+						3  ---->  good
+						4  ---->  vgood
+						5more  ---->  vgood
+					small  ---->  good
+				med,8,acc,4,4
+					big  ---->  vgood
+					med  ---->  vgood
+					small  ---->  acc
+				vhigh  ---->  acc
+			vhigh,35,unacc,18,1
+				high  ---->  unacc
+				low  ---->  acc
+				med  ---->  acc
+				vhigh  ---->  unacc
+		more,160,acc,77,0
+			high,37,acc,24,1
+				high,10,acc,9,2
+					2,3,acc,2,4
+						big  ---->  acc
+						med  ---->  acc
+						small  ---->  unacc
+					3  ---->  acc
+					4  ---->  acc
+					5more  ---->  acc
+				low,9,acc,8,2
+					2,3,acc,2,4
+						big  ---->  acc
+						med  ---->  acc
+						small  ---->  unacc
+					3  ---->  acc
+					4  ---->  acc
+					5more  ---->  acc
+				med,8,acc,7,2
+					2,2,acc,1,4
+						big  ---->  acc
+						med  ---->  acc
+						small  ---->  unacc
+					3  ---->  acc
+					4  ---->  acc
+					5more  ---->  acc
+				vhigh  ---->  unacc
+			low,39,vgood,16,1
+				high,11,vgood,6,4
+					big  ---->  vgood
+					med,3,vgood,2,2
+						2  ---->  acc
+						3  ---->  vgood
+						4  ---->  vgood
+						5more  ---->  vgood
+					small,4,acc,3,2
+						2  ---->  unacc
+						3  ---->  acc
+						4  ---->  acc
+						5more  ---->  acc
+				low,10,vgood,5,4
+					big  ---->  vgood
+					med,3,vgood,2,2
+						2  ---->  good
+						3  ---->  vgood
+						4  ---->  vgood
+						5more  ---->  vgood
+					small,4,good,3,2
+						2  ---->  unacc
+						3  ---->  good
+						4  ---->  good
+						5more  ---->  good
+				med,9,vgood,5,4
+					big  ---->  vgood
+					med,4,vgood,3,2
+						2  ---->  good
+						3  ---->  vgood
+						4  ---->  vgood
+						5more  ---->  vgood
+					small,3,good,2,2
+						2  ---->  unacc
+						3  ---->  good
+						4  ---->  good
+						5more  ---->  good
+				vhigh  ---->  acc
+			med,43,acc,23,1
+				high,11,acc,10,2
+					2,2,acc,1,4
+						big  ---->  acc
+						med  ---->  acc
+						small  ---->  unacc
+					3  ---->  acc
+					4  ---->  acc
+					5more  ---->  acc
+				low,12,vgood,7,4
+					big  ---->  vgood
+					med,4,vgood,3,2
+						2  ---->  good
+						3  ---->  vgood
+						4  ---->  vgood
+						5more  ---->  vgood
+					small,4,good,3,2
+						2  ---->  unacc
+						3  ---->  good
+						4  ---->  good
+						5more  ---->  good
+				med,10,vgood,5,4
+					big  ---->  vgood
+					med,2,acc,1,2
+						2  ---->  acc
+						3  ---->  vgood
+						4  ---->  acc
+						5more  ---->  acc
+					small,4,acc,3,2
+						2  ---->  unacc
+						3  ---->  acc
+						4  ---->  acc
+						5more  ---->  acc
+				vhigh,10,acc,9,2
+					2,2,acc,1,4
+						big  ---->  acc
+						med  ---->  acc
+						small  ---->  unacc
+					3  ---->  acc
+					4  ---->  acc
+					5more  ---->  acc
+			vhigh,41,unacc,24,1
+				high  ---->  unacc
+				low,10,acc,9,2
+					2,2,acc,1,4
+						big  ---->  acc
+						med  ---->  acc
+						small  ---->  unacc
+					3  ---->  acc
+					4  ---->  acc
+					5more  ---->  acc
+				med,9,acc,8,2
+					2  ---->  unacc
+					3  ---->  acc
+					4  ---->  acc
+					5more  ---->  acc
+				vhigh  ---->  unacc
+	low  ---->  unacc
+	med,455,unacc,280,3
+		2  ---->  unacc
+		4,146,acc,74,0
+			high,36,unacc,23,4
+				big,11,acc,8,1
+					high  ---->  acc
+					low  ---->  acc
+					med  ---->  acc
+					vhigh  ---->  unacc
+				med,11,unacc,6,2
+					2  ---->  unacc
+					3  ---->  unacc
+					4  ---->  acc
+					5more,4,acc,3,1
+						high  ---->  acc
+						low  ---->  acc
+						med  ---->  acc
+						vhigh  ---->  unacc
+				small  ---->  unacc
+			low,39,acc,24,1
+				high  ---->  acc
+				low,8,acc,4,4
+					big  ---->  good
+					med,3,good,2,2
+						2  ---->  good
+						3  ---->  acc
+						4  ---->  good
+						5more  ---->  good
+					small  ---->  acc
+				med,10,acc,5,4
+					big  ---->  good
+					med,3,good,2,2
+						2  ---->  acc
+						3  ---->  good
+						4  ---->  good
+						5more  ---->  good
+					small  ---->  acc
+				vhigh,12,acc,6,4
+					big  ---->  acc
+					med,4,acc,2,2
+						2  ---->  unacc
+						3  ---->  unacc
+						4  ---->  acc
+						5more  ---->  acc
+					small  ---->  unacc
+			med,40,acc,27,1
+				high,8,acc,4,4
+					big  ---->  acc
+					med,4,acc,2,2
+						2  ---->  unacc
+						3  ---->  unacc
+						4  ---->  acc
+						5more  ---->  acc
+					small  ---->  unacc
+				low,12,acc,6,4
+					big  ---->  good
+					med,4,acc,2,2
+						2  ---->  acc
+						3  ---->  acc
+						4  ---->  good
+						5more  ---->  good
+					small  ---->  acc
+				med  ---->  acc
+				vhigh,9,acc,6,4
+					big  ---->  acc
+					med,4,acc,2,2
+						2  ---->  unacc
+						3  ---->  unacc
+						4  ---->  acc
+						5more  ---->  acc
+					small  ---->  unacc
+			vhigh,31,unacc,21,1
+				high  ---->  unacc
+				low,11,acc,6,4
+					big  ---->  acc
+					med,4,acc,2,2
+						2  ---->  unacc
+						3  ---->  unacc
+						4  ---->  acc
+						5more  ---->  acc
+					small  ---->  unacc
+				med,7,acc,4,4
+					big  ---->  acc
+					med,2,acc,1,2
+						2  ---->  unacc
+						3  ---->  acc
+						4  ---->  acc
+						5more  ---->  acc
+					small  ---->  unacc
+				vhigh  ---->  unacc
+		more,150,acc,72,4
+			big,47,acc,31,0
+				high,10,acc,9,1
+					high  ---->  acc
+					low  ---->  acc
+					med  ---->  acc
+					vhigh  ---->  unacc
+				low,14,acc,8,1
+					high  ---->  acc
+					low  ---->  good
+					med  ---->  good
+					vhigh  ---->  acc
+				med,11,acc,8,1
+					high  ---->  acc
+					low  ---->  good
+					med  ---->  acc
+					vhigh  ---->  acc
+				vhigh,12,acc,6,1
+					high  ---->  unacc
+					low  ---->  acc
+					med  ---->  acc
+					vhigh  ---->  unacc
+			med,48,acc,27,0
+				high,14,acc,7,1
+					high,3,acc,2,2
+						2  ---->  unacc
+						3  ---->  acc
+						4  ---->  acc
+						5more  ---->  acc
+					low,3,acc,2,2
+						2  ---->  unacc
+						3  ---->  acc
+						4  ---->  acc
+						5more  ---->  acc
+					med,4,acc,3,2
+						2  ---->  unacc
+						3  ---->  acc
+						4  ---->  acc
+						5more  ---->  acc
+					vhigh  ---->  unacc
+				low,12,acc,7,1
+					high  ---->  acc
+					low,3,good,2,2
+						2  ---->  acc
+						3  ---->  good
+						4  ---->  good
+						5more  ---->  good
+					med,3,good,2,2
+						2  ---->  acc
+						3  ---->  good
+						4  ---->  good
+						5more  ---->  good
+					vhigh,4,acc,3,2
+						2  ---->  unacc
+						3  ---->  acc
+						4  ---->  acc
+						5more  ---->  acc
+				med,10,acc,8,2
+					2,2,acc,1,1
+						high  ---->  acc
+						low  ---->  acc
+						med  ---->  acc
+						vhigh  ---->  unacc
+					3  ---->  acc
+					4,3,acc,2,1
+						high  ---->  acc
+						low  ---->  good
+						med  ---->  acc
+						vhigh  ---->  acc
+					5more  ---->  acc
+				vhigh,12,unacc,7,1
+					high  ---->  unacc
+					low,4,acc,3,2
+						2  ---->  unacc
+						3  ---->  acc
+						4  ---->  acc
+						5more  ---->  acc
+					med  ---->  acc
+					vhigh  ---->  unacc
+			small,55,unacc,41,0
+				high  ---->  unacc
+				low,16,acc,9,1
+					high,4,acc,3,2
+						2  ---->  unacc
+						3  ---->  acc
+						4  ---->  acc
+						5more  ---->  acc
+					low,4,acc,3,2
+						2  ---->  unacc
+						3  ---->  acc
+						4  ---->  acc
+						5more  ---->  acc
+					med,4,acc,3,2
+						2  ---->  unacc
+						3  ---->  acc
+						4  ---->  acc
+						5more  ---->  acc
+					vhigh  ---->  unacc
+				med,14,unacc,9,1
+					high  ---->  unacc
+					low,3,acc,2,2
+						2  ---->  unacc
+						3  ---->  acc
+						4  ---->  acc
+						5more  ---->  acc
+					med,4,acc,3,2
+						2  ---->  unacc
+						3  ---->  acc
+						4  ---->  acc
+						5more  ---->  acc
+					vhigh  ---->  unacc
+				vhigh  ---->  unacc
